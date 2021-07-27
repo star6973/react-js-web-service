@@ -1,5 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
+import axios from "axios";
+import Movie from "./Movie";
 
 /*
 // 동적으로 데이터를 보내주기
@@ -180,21 +182,58 @@ class App extends React.Component {
 }
 */
 
+/*
+  [axios]
+  - fetch 위에 작은 layer
+  - 브라우저, Node.js를 위한 Promise API를 활용하는 HTTP 비동기 통신 라이브러리
+  - 백엔드랑 프론트엔드와 통신을 쉽게하기 위해 Ajax와 더불어 사용
+*/
 class App extends React.Component {
   state = {
-    isLoading: true
+    isLoading: true,
+    movieList: []
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ isLoading : false })
-    }, 4000);
-  }
-
-  render() {
+  // get 요청이 들어올 때까지 대기
+  getMovies = async () => {
+    // const movies_json = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json");
+    // console.log(movies_json.data.data.movies);
     // ES6 문법
-    const { isLoading } = this.state;
-    return <div>{ isLoading ? "Loading" : "We are ready" }</div>
+    const {
+      data: {
+        data: { movies }
+      } 
+    } = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json?sort_by=rating");
+    console.log(movies);
+    this.setState({ movieList: movies, isLoading: false });
+  }
+  
+  componentDidMount = () => {
+    this.getMovies();
+  }
+
+render = () => {
+    // ES6 문법
+    const { isLoading, movieList } = this.state;
+    return (
+      <div> {
+        isLoading
+            ? "Loading"
+            : movieList.map(movie => {
+                // Movie 앱의 props
+                return (
+                  <Movie
+                    key={movie.id}
+                    id={movie.id}
+                    year={movie.year}
+                    title={movie.title}
+                    summary={movie.summary}
+                    poster={movie.medium_cover_image}
+                  />
+                );
+            })} 
+      </div>
+    );
   }
 }
 
