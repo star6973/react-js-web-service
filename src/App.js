@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/*
 // 동적으로 데이터를 보내주기
 const foodILike = [
   {
@@ -79,6 +80,43 @@ function App() {
       {foodILike.map(renderFood)}
     </div>
   );
+}
+*/
+
+// class component
+// 상속해서 function 사용
+// React는 자동으로 class component의 render method를 실행함
+// class component를 사용하면 로컬 state와 life cycle method와 같은 부가적인 기능을 사용할 수 있다
+// state는 object이며 동적으로 변한다
+
+// 기본적으로 React에서 render function은 state의 상태가 변경된다고 다시 호출되지 않는다
+// state의 변경을 원한다면 setState를 사용해야 한다
+// setState를 사용하면 원하는 부분만 변경 가능하다 => 이게 바로 React의 SPA!!
+
+// setState를 사용할 때, React에서 외부의 상태에 의존하지 않는 좋은 방법은 current를 사용하는 것이다
+// current === this.state
+class App extends React.Component {
+  state = {
+    count: 0
+  }
+
+  handleIncrease = () => {
+    this.setState(current => ({ count: current.count + 1 }));
+  }
+
+  handleDecrease = () => {
+    this.setState(current => ({ count: current.count - 1 }));
+  }
+
+  render () {
+    return (
+      <div>
+        <h1>The number is {this.state.count}</h1>
+        <button onClick={this.handleIncrease}>Increase</button>
+        <button onClick={this.handleDecrease}>Decrease</button>
+      </div>
+    )
+  }
 }
 
 export default App;
