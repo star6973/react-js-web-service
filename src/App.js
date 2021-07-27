@@ -2,6 +2,8 @@ import React from "react";
 // import PropTypes from "prop-types";
 import axios from "axios";
 import Movie from "./Movie";
+import "./App.css";
+import { ID_KEY, SECRET_KEY } from "./Key";
 
 /*
 // 동적으로 데이터를 보내주기
@@ -196,43 +198,84 @@ class App extends React.Component {
 
   // get 요청이 들어올 때까지 대기
   getMovies = async () => {
-    // const movies_json = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json");
+    // const movies_json = await axios.get("http://yts-proxy.nomadcoders1.now.sh/list_movies.json?sort_by=rating");
     // console.log(movies_json.data.data.movies);
     // ES6 문법
-    const {
-      data: {
-        data: { movies }
-      } 
-    } = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json?sort_by=rating");
-    console.log(movies);
-    this.setState({ movieList: movies, isLoading: false });
+    // const {
+    //   data: {
+    //     data: { movies }
+    //   }
+    // } = await axios.get("http://yts-proxy.nomadcoders1.now.sh/list_movies.json?sort_by=rating");
+
+    // 네이버 영화 검색 OPEN API 사용해보기
+    try {
+      // const naver_movies_api = await axios.get("/api/v1/search/movie.json", {
+      //   params: {
+      //     query: "트랜스포머",
+      //     display: 100
+      //   },
+      //   headers: {
+      //     'X-Naver-Client-Id': ID_KEY,
+      //     'X-Naver-Client-Secret': SECRET_KEY
+      //   }
+      // })
+      // console.log(naver_movies_api.data.items);
+
+      const {
+        data: { items }
+      } = await axios.get("/api/v1/search/movie.json", {
+        params: {
+          query: "트랜스포머",
+          display: 100
+        },
+        headers: {
+          'X-Naver-Client-Id': ID_KEY,
+          'X-Naver-Client-Secret': SECRET_KEY
+        }
+      })
+      
+      console.log(items);
+      this.setState({ movieList: items, isLoading: false });
+    } catch (error) {
+      console.log(error);
+    }
   }
   
   componentDidMount = () => {
     this.getMovies();
   }
 
-render = () => {
+  render = () => {
     // ES6 문법
     const { isLoading, movieList } = this.state;
     return (
-      <div> {
-        isLoading
-            ? "Loading"
-            : movieList.map(movie => {
+      // javascript에서 사용하는 class와 html에서 사용하는 class 이름이 같기 때문에, 구분을 위해서 className을 사용한다
+      <section className="container"> {
+        isLoading ? (
+          <div className="loader">
+            <span className="loader_text">Loading...</span>
+          </div>
+        ) : (
+          <div className="movieList">
+            {
+              movieList.map((movie, index) => {
                 // Movie 앱의 props
                 return (
                   <Movie
-                    key={movie.id}
-                    id={movie.id}
-                    year={movie.year}
+                    key={index}
+                    year={movie.pubDate}
                     title={movie.title}
-                    summary={movie.summary}
-                    poster={movie.medium_cover_image}
+                    subtitle={movie.subtitle}
+                    director={movie.director}
+                    rate={movie.userRating}
+                    poster={movie.image}
                   />
                 );
-            })} 
-      </div>
+              })
+            }
+          </div>
+        )
+      } </section>
     );
   }
 }
