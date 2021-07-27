@@ -117,6 +117,7 @@ function App() {
   - componentWillUnmount: 컴포넌트가 제거되기 직전에 호출되는 함수
 */
 
+/*
 class App extends React.Component {
   state = {
     count: 0
@@ -175,6 +176,25 @@ class App extends React.Component {
         <button onClick={this.handleDecrease}>Decrease</button>
       </div>
     )
+  }
+}
+*/
+
+class App extends React.Component {
+  state = {
+    isLoading: true
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ isLoading : false })
+    }, 4000);
+  }
+
+  render() {
+    // ES6 문법
+    const { isLoading } = this.state;
+    return <div>{ isLoading ? "Loading" : "We are ready" }</div>
   }
 }
 
