@@ -95,20 +95,79 @@ function App() {
 
 // setState를 사용할 때, React에서 외부의 상태에 의존하지 않는 좋은 방법은 current를 사용하는 것이다
 // current === this.state
+
+// 위에서 언급한 React Component는 Life Cycle이 존재하는데, 앱을 개발하면서 렌더링 직전에 특정한 작업을 해야 하거나, 컴포넌트 업데이트 전후에 처리해야 할 작업이 있을 수 있다.
+// 이때 Life Cycle 관련 함수들을 이용하면 이를 처리할 수 있다.
+// 종류: Mount, Update, UnMount
+/*
+  [Mount] ==> DOM 객체가 생성되고 브라우저에 나타나는 것
+  - constructor: 컴포넌트 클래스 생성자 함수, state의 초기값을 지정할 때 사용
+  - getDerivedStateFromProps: props와 state 값을 동기화할 때 사용하는 함수
+  - render: 컴포넌트의 기능을 정의하는 함수
+  - componentDidMount: 컴포넌트를 생성하고 첫 렌더링이 끝났을 때 호출하는 함수
+
+  [Update] ==> props값 변경, state값 변경, 부모 컴포넌트가 리렌더링, this.forceUpdate로 강제로 리렌더링
+  - getDerivedStateFromProps
+  - shouldComponentUpdate: 컴포넌트를 리렌더링 할지 말지 결정하는 함수
+  - render: 새로운 값을 사용하여 View를 리렌더링
+  - getSnapshotBeforeUpdate: 변경된 요소에 대해 DOM 객체에 반영하기 직전에 호출되는 함수
+  - ComponentDidUpdate: 컴포넌트 업데이트 작업이 끝난 리렌더링 후에 호출되는 함수
+
+  [UnMount] ==> 컴포넌트가 DOM에서 제거되는 것
+  - componentWillUnmount: 컴포넌트가 제거되기 직전에 호출되는 함수
+*/
+
 class App extends React.Component {
   state = {
     count: 0
   }
 
+  constructor(props) {
+    super(props);
+    console.log("constructor 호출 --- create class App");
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log("getDerivedStateFromProps 호출");
+    return null
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("shouldComponentUpdate 호출 --- do you want to update?")
+    return true
+  }
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate 호출 --- update is done")
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log("getSnapshotBeforeUpdate 호출")
+    return null
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount 호출 --- first rendering is done");
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount 호출 --- component is dead")
+  }
+
   handleIncrease = () => {
-    this.setState(current => ({ count: current.count + 1 }));
+    this.setState(current => ({ 
+      count: current.count + 1 
+    }));
   }
 
   handleDecrease = () => {
-    this.setState(current => ({ count: current.count - 1 }));
+    this.setState(current => ({ 
+      count: current.count - 1 
+    }));
   }
 
   render () {
+    console.log("render 호출 --- rendering now");
     return (
       <div>
         <h1>The number is {this.state.count}</h1>
