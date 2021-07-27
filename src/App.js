@@ -259,18 +259,20 @@ class App extends React.Component {
           <div className="movieList">
             {
               movieList.map((movie, index) => {
-                // Movie 앱의 props
-                return (
-                  <Movie
-                    key={index}
-                    year={movie.pubDate}
-                    title={movie.title}
-                    subtitle={movie.subtitle}
-                    director={movie.director}
-                    rate={movie.userRating}
-                    poster={movie.image}
-                  />
-                );
+                if (movie.image !== '') {
+                  // Movie 앱의 props
+                  return (
+                    <Movie
+                      key={index}
+                      year={movie.pubDate}
+                      title={movie.title}
+                      subtitle={movie.subtitle}
+                      director={movie.director}
+                      rate={movie.userRating}
+                      poster={movie.image}
+                    />
+                  );
+                }
               })
             }
           </div>
