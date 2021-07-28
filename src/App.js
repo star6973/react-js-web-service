@@ -193,39 +193,34 @@ class App extends React.Component {
 class App extends React.Component {
   state = {
     isLoading: true,
+    isSearchMovie: false,
+    searchMovie: '',
     movieList: []
   }
 
   // get 요청이 들어올 때까지 대기
+  // 네이버 영화 검색 OPEN API 사용해보기
   getMovies = async () => {
-    // const movies_json = await axios.get("http://yts-proxy.nomadcoders1.now.sh/list_movies.json?sort_by=rating");
-    // console.log(movies_json.data.data.movies);
-    // ES6 문법
-    // const {
-    //   data: {
-    //     data: { movies }
-    //   }
-    // } = await axios.get("http://yts-proxy.nomadcoders1.now.sh/list_movies.json?sort_by=rating");
-
-    // 네이버 영화 검색 OPEN API 사용해보기
     try {
-      // const naver_movies_api = await axios.get("/api/v1/search/movie.json", {
-      //   params: {
-      //     query: "트랜스포머",
-      //     display: 100
-      //   },
-      //   headers: {
-      //     'X-Naver-Client-Id': ID_KEY,
-      //     'X-Naver-Client-Secret': SECRET_KEY
-      //   }
-      // })
-      // console.log(naver_movies_api.data.items);
+      /*
+        const naver_movies_api = await axios.get("/api/v1/search/movie.json", {
+          params: {
+            query: "트랜스포머",
+            display: 100
+          },
+          headers: {
+            'X-Naver-Client-Id': ID_KEY,
+            'X-Naver-Client-Secret': SECRET_KEY
+          }
+        })
+      */
 
+      // ES6 문법
       const {
         data: { items }
       } = await axios.get("/api/v1/search/movie.json", {
         params: {
-          query: "트랜스포머",
+          query: this.state.searchMovie,
           display: 100
         },
         headers: {
@@ -235,49 +230,85 @@ class App extends React.Component {
       })
       
       console.log(items);
+      if (Object.keys(items).length !== 0) {
+        await this.setState({ isSearchMovie: false })
+      } else {
+        await this.setState({ isSearchMovie: true })
+      }
       this.setState({ movieList: items, isLoading: false });
     } catch (error) {
       console.log(error);
     }
   }
-  
-  componentDidMount = () => {
-    this.getMovies();
+
+  // prevent <form> submit reloading
+  handleSubmitEvent = (e) => {
+    e.preventDefault();
   }
+
+  handleKeyEvent = async (e) => {
+    // Enter 키를 누를 경우만 submit되도록
+    if (e.keyCode === 13) {
+      await this.setState({ searchMovie: e.target.value });
+      this.getMovies();
+    }
+  }
+  
+  componentDidMount = () => {}
 
   render = () => {
     // ES6 문법
-    const { isLoading, movieList } = this.state;
+    const { isLoading, isSearchMovie, searchMovie, movieList } = this.state;
+    
+    // 문자열 처리
+    let filteredMovieList = movieList.filter(item => item.image.includes("http"));
+    filteredMovieList.map(item => {
+      let filterdTitle = item.title.replace("<b>", "").replace("</b>", "");
+      item.title = filterdTitle;
+      return item;
+    })
+
     return (
       // javascript에서 사용하는 class와 html에서 사용하는 class 이름이 같기 때문에, 구분을 위해서 className을 사용한다
-      <section className="container"> {
-        isLoading ? (
-          <div className="loader">
-            <span className="loader_text">Loading...</span>
-          </div>
-        ) : (
-          <div className="movieList">
-            {
-              movieList.map((movie, index) => {
-                if (movie.image !== '') {
-                  // Movie 앱의 props
+      <section className="container">
+          { searchMovie === '' ?
+            <form onSubmit={this.handleSubmitEvent}>
+                <div className="movie__search">
+                    <h3>영화 검색</h3>
+                    <input
+                        className="movie__input"
+                        type="text"
+                        onKeyUp={this.handleKeyEvent}
+                        placeholder="보고싶은 영화가 있으신가요?"/>
+                </div>
+            </form>
+          : isLoading ? (
+            <div className="loader">
+                <span className="loader__text">Loading...</span>
+            </div>
+          ) 
+          : isSearchMovie ? (
+            <div>
+              <h3>결과가 없습니다</h3>
+            </div>
+          ) : (
+            <div className="movieList">
+                { filteredMovieList.map((movie, index) => { // Movie 앱의 props 
                   return (
                     <Movie
-                      key={index}
-                      year={movie.pubDate}
-                      title={movie.title}
-                      subtitle={movie.subtitle}
-                      director={movie.director}
-                      rate={movie.userRating}
-                      poster={movie.image}
+                        key={index}
+                        year={movie.pubDate}
+                        title={movie.title}
+                        subtitle={movie.subtitle}
+                        director={movie.director}
+                        rate={movie.userRating}
+                        poster={movie.image}
                     />
-                  );
-                }
-              })
-            }
-          </div>
-        )
-      } </section>
+                  )
+                })}
+            </div>
+          )}
+      </section>
     );
   }
 }
