@@ -254,7 +254,29 @@ class App extends React.Component {
     }
   }
   
-  componentDidMount = () => {}
+  // 컴포넌트를 생성하고 첫 렌더링이 끝났을 때 호출하는 함수
+  // CSS style을 꾸미기 위한 자바스크립트를 넣어줌
+  componentDidMount = () => {
+    const byline = document.getElementById('byline');
+    let bylineText = byline.innerHTML;
+    let bylineArr = bylineText.split('');
+    let span;
+    let letter;
+
+    byline.innerHTML = '';
+
+    for (let i = 0; i < bylineArr.length; i++){ 
+      span = document.createElement("span");
+      letter = document.createTextNode(bylineArr[i]);
+      
+      if(bylineArr[i] === ' ') {
+        byline.appendChild(letter);
+      } else {
+        span.appendChild(letter);
+        byline.appendChild(span);
+      }
+    }
+  }
 
   render = () => {
     // ES6 문법
@@ -263,52 +285,68 @@ class App extends React.Component {
     // 문자열 처리
     let filteredMovieList = movieList.filter(item => item.image.includes("http"));
     filteredMovieList.map(item => {
-      let filterdTitle = item.title.replace("<b>", "").replace("</b>", "");
-      item.title = filterdTitle;
+      let re = RegExp(/<b>|<\/b>|&nbsp;|&lt;|&amp;|&quot;|&#035;|&#039;|&gt;/g);
+      let filteredTitle = item.title.replace(re, "");
+      let filteredSubTitle = item.subtitle.replace(re, "");
+      let filteredDirector = item.director.replaceAll("|", ", ").replace(/,\s*$/, "");
+      let filteredActor = item.actor.replaceAll("|", ", ").replace(/,\s*$/, "");
+
+      item.title = filteredTitle;
+      item.subtitle = filteredSubTitle;
+      item.director = filteredDirector;
+      item.actor = filteredActor;
+
       return item;
     })
 
     return (
       // javascript에서 사용하는 class와 html에서 사용하는 class 이름이 같기 때문에, 구분을 위해서 className을 사용한다
-      <section className="container">
+      <div className="container">
+        <div className="container__title">
+          <h2 className="byline" id="byline">Movie Search Theather</h2>
+        </div>
+        <div className="container__search">
           { searchMovie === '' ?
             <form onSubmit={this.handleSubmitEvent}>
                 <div className="movie__search">
-                    <h3>영화 검색</h3>
-                    <input
-                        className="movie__input"
-                        type="text"
-                        onKeyUp={this.handleKeyEvent}
-                        placeholder="보고싶은 영화가 있으신가요?"/>
+                  <input
+                    className="movie__input"
+                    type="text"
+                    onKeyUp={this.handleKeyEvent}
+                    placeholder="보고싶은 영화가 있으신가요?"
+                  />
                 </div>
             </form>
-          : isLoading ? (
-            <div className="loader">
-                <span className="loader__text">Loading...</span>
-            </div>
-          ) 
-          : isSearchMovie ? (
-            <div>
-              <h3>결과가 없습니다</h3>
-            </div>
-          ) : (
-            <div className="movieList">
-                { filteredMovieList.map((movie, index) => { // Movie 앱의 props 
-                  return (
-                    <Movie
-                        key={index}
-                        year={movie.pubDate}
-                        title={movie.title}
-                        subtitle={movie.subtitle}
-                        director={movie.director}
-                        rate={movie.userRating}
-                        poster={movie.image}
-                    />
-                  )
-                })}
-            </div>
-          )}
-      </section>
+            : isLoading ? (
+              <div className="loader">
+                  <span className="loader__text">Loading...</span>
+              </div>
+            ) 
+            : isSearchMovie ? (
+              <div>
+                <h3>결과가 없습니다</h3>
+              </div>
+            ) : (
+              <div className="movieList">
+                  { filteredMovieList.map((movie, index) => { // Movie 앱의 props 
+                    return (
+                      <Movie
+                          key={index}
+                          poster={movie.image}
+                          year={movie.pubDate}
+                          title={movie.title}
+                          subtitle={movie.subtitle}
+                          director={movie.director}
+                          actor={movie.actor}
+                          rate={movie.userRating}                          
+                      />
+                    )
+                  })}
+              </div>
+            )
+          }
+        </div>
+      </div>
     );
   }
 }
