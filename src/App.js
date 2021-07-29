@@ -308,14 +308,16 @@ class App extends React.Component {
         <div className="container__search">
           { searchMovie === '' ?
             <form onSubmit={this.handleSubmitEvent}>
-                <div className="movie__search">
-                  <input
-                    className="movie__input"
-                    type="text"
-                    onKeyUp={this.handleKeyEvent}
-                    placeholder="보고싶은 영화가 있으신가요?"
-                  />
-                </div>
+              <div className="movie__search">
+              <input
+                  className="movie__input"
+                  type="text"
+                  onKeyUp={this.handleKeyEvent}
+                  placeholder="Search for the movie you want to see."
+                  autoComplete="off"
+                />
+                <img className="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png" alt="search-icon" />
+              </div>
             </form>
             : isLoading ? (
               <div className="loader">
