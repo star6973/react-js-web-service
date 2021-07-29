@@ -2,46 +2,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Movie.css";
-import { Palette } from "color-thief-react";
-var colorThiefReact = require("color-thief-react")
 
 // map에 있는 각각의 item은 key값이 필요하다
 function Movie({ poster, year, title, subtitle, director, actor, rate }) {
-    const imgSrc = poster;
-    const Loading = () => <div>Loading...</div>;
-    console.log(colorThiefReact);
-    console.log(colorThiefReact.getPalette(imgSrc, 5, {crossOrigin: "anonymouse"}));
-
-    const handleOnLoad = () => {
-        console.log("load!!");
-
-        <Palette src={imgSrc} crossOrigin="anonymous" format="hex" colorCount={4}>
-            {({ data, loading }) => {
-                console.log("data = ", data);
-                if (loading) return <Loading />;
-                return (
-                    <div>
-                    Palette:
-                    <ul>
-                        {data.map((color, index) => (
-                        <li key={index} style={{ color: color }}>
-                            <strong>{color}</strong>
-                        </li>
-                        ))}
-                    </ul>
-                    </div>
-                );
-            }}
-        </Palette>
-    }
-
     return (
         <div className="movies">
             <img 
-                src={imgSrc}
+                src={poster}
                 alt={title}
                 title={title}
-                onLoad={handleOnLoad}
             />
             <div className="movies__data">
                 <h3 className="movie__title">{title}</h3>
