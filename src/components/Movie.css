@@ -1,4 +1,4 @@
-.movieList {
+.movie__list {
     display: grid;
     grid-template-columns: 30% 30% 30%;
     column-gap: 50px;
@@ -6,9 +6,9 @@
     margin-left: 70px;
     margin-top: 240px;
 }
-
-.movieList .movies {
+.movie__list .movie__items {
     background-color: white;
+    height: 80%;
     margin-bottom: 70px;
     font-weight: 300;
     padding: 20px;
@@ -16,16 +16,14 @@
     color: #adaeb9;
     box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 }
-
-.movieList .movies a {
+.movie__list .movie__items a {
     display: grid;
     grid-template-columns: minmax(150px, 1fr) 2fr;
     grid-gap: 20px;
     text-decoration: none;
     color: inherit;
 }
-
-.movieList img {
+.movie__list img {
     position: relative;
     top: -50px;
     max-width: 150px;
@@ -34,20 +32,17 @@
     margin-right: 30px;
     box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
-
-.movieList .movie__title,
-.movieList .movie__year {
+.movie__list .items__title,
+.movie__list .items__year {
     margin: 0;
     font-weight: bold;
 }
-
-.movieList .movie__title {
+.movie__list .items__title {
     margin-bottom: 5px;
     font-size: 24px;
     color: #2c2c2c;
 }
-
-.movieList .movie__subtitle {
+.movie__list .items__subtitle {
     color: #808080;
     list-style: none;
     padding: 0;
@@ -56,31 +51,25 @@
     flex-wrap: wrap;
     margin: 5px 0;
 }
-
-.movieList .movie__year {
+.movie__list .items__year {
     margin-right: 10px;
     font-size: 14px;
 }
-
-.movieList .movie__director {
+.movie__list .items__director {
     color: #9b7eab;
     margin-right: 10px;
     font-size: 14px;
     font-style: italic;
 }
-
-.movieList .movie__actor {
+.movie__list .items__actor {
     color: #7b3aa1;
     margin-right: 10px;
     font-size: 14px;
     font-style: italic;
 }
-
-.movieList .movie__rate {
+.movie__list .items__rate {
     color: #cc6c8c;
     margin-right: 10px;
     font-size: 14px;
     font-style: italic;
 }
-
-
