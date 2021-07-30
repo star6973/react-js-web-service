@@ -210,7 +210,7 @@ class HomePage extends React.Component {
       } = await axios.get("/api/v1/search/movie.json", {
         params: {
           query: this.state.searchMovie,
-          display: 100
+          display: 12
         },
         headers: {
           'X-Naver-Client-Id': ID_KEY,
