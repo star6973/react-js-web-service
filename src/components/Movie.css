@@ -4,11 +4,10 @@
     column-gap: 50px;
     row-gap: 50px;
     margin-left: 70px;
-    margin-top: 240px;
+    margin-top: 20%;
 }
 .movie__list .movie__items {
     background-color: white;
-    height: 80%;
     margin-bottom: 70px;
     font-weight: 300;
     padding: 20px;
