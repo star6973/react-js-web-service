@@ -8,6 +8,7 @@ import "./Movie.css";
 function Movie({ poster, year, title, subtitle, director, actor, rate }) {
     return (
         // "/detail" URL이 호출될 경우, state를 보내준다
+        // Movie function component는 곧 영화 하나 하나의 객체이기 때문에, movie__items라는 컴포넌트를 클릭하면 아래의 정보를 보내준다
         <Link to={{
             pathname: "/detail",
             state: { poster, year, title, subtitle, director, actor, rate }
