@@ -200,11 +200,6 @@ class HomePage extends React.Component {
     movieList: []
   }
 
-  constructor(props) {
-    super(props);
-    console.log("Rendering!!")
-  }
-
   // get 요청이 들어올 때까지 대기
   // 네이버 영화 검색 OPEN API 사용해보기
   getMovies = async () => {
@@ -296,7 +291,7 @@ class HomePage extends React.Component {
     return (
       // javascript에서 사용하는 class와 html에서 사용하는 class 이름이 같기 때문에, 구분을 위해서 className을 사용한다
       <div className="container">
-        <div className="container__title">
+        <div className="container__title" style={searchMovie === '' ? {} : { display: "none" }}>
           <h2 className="byline" id="byline">Movie Search Theather</h2>
         </div>
         <div className="container__search">
