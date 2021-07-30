@@ -38,6 +38,13 @@ body {
 img {
     width: 100%;
 }
+#root {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 .byline span {
     animation: spin-letters 10s linear infinite;
 }
@@ -78,11 +85,6 @@ img {
     height: 100%;
     display: flex;
     color: #fff;
-}
-.container__search .movie__search {
-    position: absolute;
-    margin-left: 40%;
-    margin-top: 35%;
 }
 input.movie__input {
     margin: 0 auto;
