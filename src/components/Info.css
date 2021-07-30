@@ -1,0 +1,23 @@
+.movie__infos img {
+    width: 40%;
+    padding: 30px;
+}
+.movie__infos {
+    display: contents;
+}
+.infos__data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.infos__data .infos__title {
+    font-size: 30px;
+    font-style: oblique;
+}
+.infos__data .infos__year {
+    font-size: 20px;
+    text-align: center;
+}
+.infos__data .infos__rate {
+    text-align: center;
+}
