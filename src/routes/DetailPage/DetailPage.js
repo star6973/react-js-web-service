@@ -1,4 +1,6 @@
 import React from "react";
+import Info from "../../components/Info";
+import "./DetailPage.css";
 
 class DetailPage extends React.Component {
     state = {
@@ -7,7 +9,7 @@ class DetailPage extends React.Component {
     }
     componentDidMount() {
         const { location, history } = this.props;
-        console.log(this.props);
+
         if (location.state === undefined) {
             console.log("Go To Home Page!!")
             history.push("/");
@@ -18,9 +20,19 @@ class DetailPage extends React.Component {
 
     render = () => {
         const { location } = this.props;
-        const { poster, year, title, subtitle, director, actor, rate } = location.state;
+        const items = location.state;
+        console.log(items)
 
-        return <span>Hello</span>
+        return (
+            <div className="container__detail">
+                <Info
+                    poster={items.poster}
+                    year={items.year}
+                    title={items.title}
+                    rate={items.rate}
+                />
+            </div>
+        )
     }
 }
 
