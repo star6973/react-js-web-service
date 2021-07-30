@@ -3,6 +3,7 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from "./routes/HomePage/HomePage"
 import DetailPage from "./routes/DetailPage/DetailPage"
 import Navigation from "./components/Navigation";
+import "./App.css";
 
 /*
   ** 라우팅(Routing)이란 경로(URL)에 따라 페이지의 이동을 설정하는 것. **
